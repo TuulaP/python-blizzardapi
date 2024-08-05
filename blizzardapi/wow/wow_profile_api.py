@@ -214,8 +214,11 @@ class WowProfileApi(Api):
 
     def get_character_profile_summary(self, region, locale, realm_slug, character_name):
         """Return a profile summary for a character."""
+        
+        # FYI: Character summary might not return anything if there has not been logged in for a while.
+        # 2024: region seems to be needed nowadays. Might be needed in all calls ^^  & vv
         resource = f"/profile/wow/character/{realm_slug}/{character_name}"
-        query_params = {"namespace": f"profile-{region}", "locale": locale}
+        query_params = {"namespace": f"profile-{region}", "locale": locale, "region":region}
         return super().get_resource(resource, region, query_params)
 
     def get_character_profile_status(self, region, locale, realm_slug, character_name):

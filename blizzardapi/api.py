@@ -50,7 +50,16 @@ class Api:
 
     def _response_handler(self, response):
         """Handle the response."""
-        out = response.json()
+
+        # TODO some nicer error handling would be nice here
+        # for the time being returning empty string
+        if (response.status_code == 200):
+            out = response.json()
+        else:
+            print("ERR", response.status_code)
+            return ""
+        
+
         if 'Last-Modified' in response.headers:
             # We could return them all, but this Last Modified is the specific 
             # header that lets us know when the next update will be available
@@ -81,6 +90,7 @@ class Api:
     def get_resource(self, resource, region, query_params={}):
         """Direction handler for when fetching resources."""
         url = self._format_api_url(resource, region)
+
         return self._request_handler(url, region, query_params)
 
     def _format_oauth_url(self, resource, region):
